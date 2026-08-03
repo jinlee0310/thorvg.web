@@ -51,6 +51,7 @@ import { effectDropShadowExample } from './effect-drop-shadow';
 import { sceneEffectsExample } from './scene-effects';
 import { errorHandlingExample } from './error-handling';
 import { accessorExample } from './accessor';
+import { textRainExample } from './text-rain';
 
 export * from './types';
 
@@ -100,6 +101,7 @@ export const showcaseExamples: ShowcaseExample[] = [
   textLineWrapExample,
   textOtfExample,
   textTtfExample,
+  textRainExample,
   // Media (alphabetically sorted by title)
   pictureJpgExample,
   lottieAnimationExample,
