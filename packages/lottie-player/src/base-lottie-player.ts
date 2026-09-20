@@ -375,6 +375,7 @@ export class BaseLottiePlayer extends LitElement {
 
     if (!wasmModule) {
       _moduleRequested = true;
+      globalThis.__THORVG_THREAD_COUNT=4;
       wasmModule = await Module({
         locateFile: (path: string, prefix: string) => {
           if (path.endsWith('.wasm')) {
@@ -879,7 +880,7 @@ export class BaseLottiePlayer extends LitElement {
     if (!wasmModule) {
       return;
     }
-
+    globalThis.__THORVG_THREAD_COUNT=undefined;
     wasmModule.term();
     wasmModule = null;
   }
