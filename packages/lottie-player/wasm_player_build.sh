@@ -16,8 +16,10 @@ if [ "$BACKEND" = "wg" ]; then
   sed "s|EMSDK:|$EMSDK|g" ../wasm/wasm32_wg.txt > /tmp/.wasm_cross.txt
   meson setup -Db_lto=true -Ddefault_library=static -Dstatic=true -Dloaders="lottie, jpg, png, webp, ttf" -Dextra="lottie_exp" -Dthreads=false -Dfile="false" -Dpartial=false -Dengines="wg" --cross-file /tmp/.wasm_cross.txt build_wasm_player
 elif [ "$BACKEND" = "sw" ]; then
-  sed "s|EMSDK:|$EMSDK|g" ../wasm/wasm32_sw.txt > /tmp/.wasm_cross.txt
-  meson setup -Db_lto=true -Ddefault_library=static -Dstatic=true -Dloaders="lottie, jpg, png, webp, ttf" -Dextra="lottie_exp" -Dthreads=false -Dpartial=false -Dfile="false" --cross-file /tmp/.wasm_cross.txt build_wasm_player
+  sed "s|EMSDK:|$EMSDK|g" ../wasm/wasm32.txt | \
+  sed "s|cpp_args = \[|cpp_args = ['-pthread', |g" | \
+  sed "s|'--bind'|'--bind', '-pthread', '-sPTHREAD_POOL_SIZE=(typeof globalThis[\"__THORVG_THREAD_COUNT\"] !== \"undefined\" ? globalThis[\"__THORVG_THREAD_COUNT\"] : (typeof navigator !== \"undefined\" \&\& navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 4))', '-sPTHREAD_POOL_SIZE_STRICT=0', '-sINITIAL_MEMORY=134217728', '-sALLOW_TABLE_GROWTH=1', '-sINITIAL_TABLE=128'|g" > /tmp/.wasm_cross.txt
+  meson setup -Db_lto=true -Ddefault_library=static -Dstatic=true -Dloaders="lottie, jpg, png, webp, ttf" -Dextra="lottie_exp" -Dthreads=true -Dpartial=false -Dfile="false" --cross-file /tmp/.wasm_cross.txt build_wasm_player
 elif [ "$BACKEND" = "gl" ]; then
   sed "s|EMSDK:|$EMSDK|g" ../wasm/wasm32_gl.txt > /tmp/.wasm_cross.txt
   meson setup -Db_lto=true -Ddefault_library=static -Dstatic=true -Dloaders="lottie, jpg, png, webp, ttf" -Dextra="lottie_exp" -Dthreads=false -Dpartial=false -Dengines="gl" -Dfile="false" --cross-file /tmp/.wasm_cross.txt build_wasm_player
